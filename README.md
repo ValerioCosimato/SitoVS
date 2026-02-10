@@ -1,2 +1,1385 @@
-# SitoVS
-.
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sito.VS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Cormorant+Garamond:wght@300;400;600&family=Dancing+Script:wght@400;700&family=Quicksand:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #4a90e2;
+            --secondary: #7ab8ff;
+            --dark: #1a2332;
+            --light: #f0f7ff;
+            --accent: #2e5c8a;
+            --gradient-1: #4a90e2;
+            --gradient-2: #6ba5f0;
+            --gradient-3: #89b9f7;
+            --gradient-4: #a8ceff;
+            --warm-blue: #5b9bd5;
+            --soft-pink: #ffd4e5;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(168, 206, 255, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(137, 185, 247, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.4) 0%, transparent 30%),
+                linear-gradient(135deg, #e8f4f8 0%, #d4e9f7 25%, #b8dbf5 50%, #a8ceff 100%);
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Subtle animated shapes in background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 15% 15%, rgba(255, 255, 255, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 85% 85%, rgba(168, 206, 255, 0.15) 0%, transparent 25%);
+            animation: gentleMove 20s ease-in-out infinite alternate;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.5;
+            animation: slowFloat 60s linear infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes gentleMove {
+            0%, 100% {
+                transform: translate(0, 0);
+            }
+            50% {
+                transform: translate(20px, 20px);
+            }
+        }
+
+        @keyframes slowFloat {
+            from {
+                transform: translate(0, 0);
+            }
+            to {
+                transform: translate(100px, 100px);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0);
+                opacity: 0.7;
+            }
+            50% {
+                transform: translate(10px, 10px);
+                opacity: 0.9;
+            }
+        }
+
+        @keyframes drift {
+            from {
+                transform: translateX(-100%);
+            }
+            to {
+                transform: translateX(100%);
+            }
+        }
+
+        /* Floating hearts background */
+        .hearts-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            opacity: 0;
+            animation: floatHeart 15s infinite;
+        }
+
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Entrance Screen */
+        #entrance-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(168, 206, 255, 0.98) 0%, rgba(137, 185, 247, 0.98) 50%, rgba(91, 155, 213, 0.98) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 1s ease, visibility 1s ease;
+            overflow: hidden;
+        }
+
+        /* Subtle decorative circles */
+        #entrance-screen::before {
+            content: '';
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+            animation: gentleFloat 8s ease-in-out infinite;
+        }
+
+        #entrance-screen::after {
+            content: '';
+            position: absolute;
+            bottom: 10%;
+            right: 10%;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+            animation: gentleFloat 8s ease-in-out infinite reverse;
+        }
+
+        @keyframes gentleFloat {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-30px);
+            }
+        }
+
+        #entrance-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .entrance-content {
+            text-align: center;
+            padding: 3rem;
+            animation: fadeInScale 1.5s ease;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border-radius: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.8) rotate(-5deg);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        .entrance-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(3rem, 10vw, 5rem);
+            color: white;
+            margin-bottom: 1rem;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
+            animation: heartbeat 2s ease-in-out infinite;
+        }
+
+        .entrance-subtitle {
+            font-family: 'Quicksand', sans-serif;
+            font-size: clamp(1.2rem, 3vw, 1.6rem);
+            color: white;
+            margin-bottom: 3rem;
+            opacity: 0.95;
+            font-weight: 600;
+        }
+
+        .enter-button {
+            padding: 1.5rem 3.5rem;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            background: white;
+            color: var(--primary);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .enter-button::before {
+            content: '♡';
+            position: absolute;
+            left: 1.5rem;
+            font-size: 1.5rem;
+            animation: heartPulse 1.5s infinite;
+        }
+
+        @keyframes heartPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+        }
+
+        .enter-button:hover {
+            transform: scale(1.1) rotate(-2deg);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, #ffffff 0%, #f0f7ff 100%);
+        }
+
+        /* Main Content */
+        #main-content {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 1s ease 0.5s;
+            position: relative;
+            z-index: 2;
+        }
+
+        #main-content.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header Section */
+        .header {
+            text-align: center;
+            padding: 4rem 2rem;
+            animation: slideDown 1s ease;
+            position: relative;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .main-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            color: var(--dark);
+            margin-bottom: 1rem;
+            text-shadow: 3px 3px 0px rgba(255, 255, 255, 0.8);
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Day Counter */
+        .counter-section {
+            background: white;
+            backdrop-filter: blur(10px);
+            border-radius: 40px;
+            padding: 3rem;
+            margin: 2rem 0;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(74, 144, 226, 0.2), 
+                        0 0 0 10px rgba(255, 255, 255, 0.5),
+                        0 0 0 20px rgba(168, 206, 255, 0.2);
+            animation: fadeInUp 1s ease 0.3s both;
+            position: relative;
+            overflow: hidden;
+            border: 3px solid rgba(74, 144, 226, 0.2);
+        }
+
+        .counter-section::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, 
+                transparent, var(--primary), var(--secondary), 
+                var(--primary), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .counter-label {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.4rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .counter-number {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(4rem, 12vw, 7rem);
+            color: var(--primary);
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+            text-shadow: 4px 4px 0px rgba(168, 206, 255, 0.3);
+            animation: numberPop 2s ease-in-out infinite;
+        }
+
+        @keyframes numberPop {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .counter-text {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.6rem;
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        /* Love Letter Section */
+        .love-letter-section {
+            margin: 4rem 0;
+            animation: fadeInUp 1s ease 0.9s both;
+        }
+
+        .letter-container {
+            background: white;
+            backdrop-filter: blur(10px);
+            border-radius: 40px;
+            padding: 3.5rem;
+            box-shadow: 0 20px 60px rgba(74, 144, 226, 0.2);
+            text-align: center;
+            border: 3px solid rgba(74, 144, 226, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .letter-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            animation: heartbeat 1.5s infinite;
+            filter: drop-shadow(0 5px 10px rgba(74, 144, 226, 0.3));
+        }
+
+        @keyframes heartbeat {
+            0%, 100% {
+                transform: scale(1);
+            }
+            25% {
+                transform: scale(1.15);
+            }
+            50% {
+                transform: scale(1);
+            }
+        }
+
+        .letter-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.8rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 0px rgba(168, 206, 255, 0.3);
+        }
+
+        .letter-text {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.4rem;
+            line-height: 2;
+            color: var(--dark);
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 500;
+            position: relative;
+            padding: 2rem;
+            background: rgba(168, 206, 255, 0.05);
+            border-radius: 20px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .letter-signature {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            color: var(--primary);
+            font-style: italic;
+            margin-top: 2rem;
+        }
+
+        /* Timeline */
+        .timeline-section {
+            margin: 4rem 0;
+            padding: 2rem;
+            animation: fadeInUp 1s ease 0.6s both;
+        }
+
+        .timeline-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            text-align: center;
+            color: var(--dark);
+            margin-bottom: 3rem;
+            text-shadow: 3px 3px 0px rgba(168, 206, 255, 0.3);
+            position: relative;
+        }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0.3;
+                transform: scale(0.8);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, 
+                var(--gradient-4) 0%, 
+                var(--primary) 50%, 
+                var(--gradient-4) 100%);
+            transform: translateX(-50%);
+            box-shadow: 0 0 20px rgba(74, 144, 226, 0.4);
+            border-radius: 10px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 4rem;
+            opacity: 0;
+            animation: fadeInTimeline 0.8s ease forwards;
+        }
+
+        .timeline-item:nth-child(1) { animation-delay: 0.9s; }
+        .timeline-item:nth-child(2) { animation-delay: 1.1s; }
+        .timeline-item:nth-child(3) { animation-delay: 1.3s; }
+        .timeline-item:nth-child(4) { animation-delay: 1.5s; }
+        .timeline-item:nth-child(5) { animation-delay: 1.7s; }
+
+        @keyframes fadeInTimeline {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-left: auto;
+            margin-right: 0;
+            text-align: left;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-right: auto;
+            margin-left: 0;
+            text-align: right;
+        }
+
+        .timeline-content {
+            width: calc(50% - 40px);
+            background: white;
+            padding: 2.5rem;
+            border-radius: 30px;
+            box-shadow: 0 10px 40px rgba(74, 144, 226, 0.15);
+            transition: all 0.4s ease;
+            position: relative;
+            border: 3px solid rgba(74, 144, 226, 0.2);
+        }
+
+        .timeline-content:hover {
+            transform: scale(1.05) rotate(-1deg);
+            box-shadow: 0 20px 60px rgba(74, 144, 226, 0.3);
+            border-color: var(--primary);
+        }
+
+        /* Speech bubble effect */
+        .timeline-item:nth-child(odd) .timeline-content::before {
+            content: '';
+            position: absolute;
+            right: -15px;
+            top: 2rem;
+            width: 0;
+            height: 0;
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-left: 15px solid white;
+            filter: drop-shadow(3px 0 2px rgba(74, 144, 226, 0.1));
+        }
+
+        .timeline-item:nth-child(even) .timeline-content::before {
+            content: '';
+            position: absolute;
+            left: -15px;
+            top: 2rem;
+            width: 0;
+            height: 0;
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-right: 15px solid white;
+            filter: drop-shadow(-3px 0 2px rgba(74, 144, 226, 0.1));
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            top: 2rem;
+            width: 30px;
+            height: 30px;
+            background: white;
+            border: 5px solid var(--primary);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            box-shadow: 
+                0 0 0 8px rgba(168, 206, 255, 0.3), 
+                0 0 30px rgba(74, 144, 226, 0.5),
+                inset 0 0 10px rgba(74, 144, 226, 0.3);
+            z-index: 10;
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% {
+                box-shadow: 
+                    0 0 0 8px rgba(168, 206, 255, 0.3), 
+                    0 0 30px rgba(74, 144, 226, 0.5),
+                    inset 0 0 10px rgba(74, 144, 226, 0.3);
+                transform: translateX(-50%) scale(1);
+            }
+            50% {
+                box-shadow: 
+                    0 0 0 15px rgba(168, 206, 255, 0.2), 
+                    0 0 40px rgba(74, 144, 226, 0.7),
+                    inset 0 0 15px rgba(74, 144, 226, 0.5);
+                transform: translateX(-50%) scale(1.1);
+            }
+        }
+
+        .timeline-date {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.1rem;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .timeline-title-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.8rem;
+            color: var(--dark);
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+        }
+
+        .timeline-description {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.15rem;
+            color: #555;
+            line-height: 1.8;
+            font-weight: 500;
+        }
+
+        /* Gallery Section */
+        .gallery-section {
+            margin: 4rem 0;
+            padding: 2rem;
+            animation: fadeInUp 1s ease 1.9s both;
+        }
+
+        .gallery-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            text-align: center;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            text-shadow: 3px 3px 0px rgba(168, 206, 255, 0.3);
+        }
+
+        .gallery-subtitle {
+            font-family: 'Quicksand', sans-serif;
+            text-align: center;
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-bottom: 3rem;
+            font-weight: 600;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .gallery-item {
+            aspect-ratio: 1;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(74, 144, 226, 0.2);
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            opacity: 0;
+            animation: fadeInScale 0.8s ease forwards;
+            animation-delay: var(--delay);
+            border: 4px solid white;
+            position: relative;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.08) rotate(-3deg);
+            box-shadow: 0 20px 50px rgba(74, 144, 226, 0.4);
+            border-color: var(--primary);
+        }
+
+        .gallery-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(168, 206, 255, 0.6), 
+                rgba(137, 185, 247, 0.6), 
+                rgba(255, 212, 229, 0.4));
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .placeholder-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .placeholder-text {
+            font-family: 'Quicksand', sans-serif;
+            text-align: center;
+            font-size: 1.1rem;
+            opacity: 0.95;
+            font-weight: 600;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .gallery-note {
+            background: white;
+            padding: 2rem;
+            border-radius: 25px;
+            text-align: center;
+            color: var(--dark);
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(74, 144, 226, 0.15);
+            border: 3px solid rgba(74, 144, 226, 0.2);
+        }
+
+        /* Final Message Section */
+        .final-message-section {
+            margin: 4rem 0 6rem 0;
+            animation: fadeInUp 1s ease 2.1s both;
+        }
+
+        .final-card {
+            background: white;
+            backdrop-filter: blur(10px);
+            border-radius: 40px;
+            padding: 4rem 3rem;
+            text-align: center;
+            box-shadow: 0 30px 80px rgba(74, 144, 226, 0.25);
+            border: 3px solid rgba(74, 144, 226, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Subtle animated gradient background */
+        .final-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(168, 206, 255, 0.1) 0%, transparent 70%);
+            animation: rotate 15s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .sparkles {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            filter: drop-shadow(0 5px 15px rgba(74, 144, 226, 0.4));
+        }
+
+        .final-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            color: var(--primary);
+            margin-bottom: 2rem;
+            position: relative;
+            text-shadow: 3px 3px 0px rgba(168, 206, 255, 0.3);
+        }
+
+        .final-text {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.5rem;
+            line-height: 2;
+            color: var(--dark);
+            max-width: 650px;
+            margin: 0 auto 2.5rem auto;
+            position: relative;
+            font-weight: 600;
+        }
+
+        .final-hearts {
+            font-size: 2.5rem;
+            filter: drop-shadow(0 5px 10px rgba(74, 144, 226, 0.3));
+        }
+
+        /* Music Control */
+        .music-control {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: white;
+            backdrop-filter: blur(10px);
+            padding: 1rem 1.8rem;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(74, 144, 226, 0.3);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            border: 3px solid rgba(74, 144, 226, 0.2);
+        }
+
+        .music-control:hover {
+            transform: scale(1.15) rotate(-5deg);
+            box-shadow: 0 15px 40px rgba(74, 144, 226, 0.4);
+            border-color: var(--primary);
+        }
+
+        .music-icon {
+            font-size: 1.8rem;
+        }
+
+        .music-text {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1rem;
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .entrance-title {
+                font-size: 2.5rem;
+            }
+
+            .entrance-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .enter-button {
+                padding: 1.2rem 2.5rem;
+                font-size: 1.3rem;
+            }
+
+            .main-title {
+                font-size: 2.5rem;
+                padding: 2rem 1rem;
+            }
+
+            .counter-section {
+                padding: 2rem 1.5rem;
+                margin: 1.5rem 0;
+            }
+
+            .counter-number {
+                font-size: 4rem;
+            }
+
+            .counter-label {
+                font-size: 1.1rem;
+            }
+
+            .counter-text {
+                font-size: 1.2rem;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-content {
+                width: calc(100% - 60px);
+                margin-left: 60px !important;
+                text-align: left !important;
+                padding: 1.5rem;
+            }
+
+            .timeline-dot {
+                left: 20px;
+            }
+
+            .timeline-date {
+                font-size: 1rem;
+            }
+
+            .timeline-title-text {
+                font-size: 1.3rem;
+            }
+
+            .timeline-description {
+                font-size: 1rem;
+            }
+
+            .music-control {
+                bottom: 1rem;
+                right: 1rem;
+                padding: 0.8rem 1.2rem;
+            }
+
+            .music-icon {
+                font-size: 1.2rem;
+            }
+
+            .music-text {
+                font-size: 0.9rem;
+            }
+
+            .letter-container {
+                padding: 2rem 1.5rem;
+                margin: 2rem 0;
+            }
+
+            .letter-icon {
+                font-size: 2.5rem;
+            }
+
+            .letter-title {
+                font-size: 1.8rem;
+            }
+
+            .letter-text {
+                font-size: 1.1rem;
+                line-height: 1.7;
+            }
+
+            .letter-signature {
+                font-size: 1.3rem;
+            }
+
+            .gallery-section {
+                padding: 1rem;
+            }
+
+            .gallery-title {
+                font-size: 2rem;
+            }
+
+            .gallery-subtitle {
+                font-size: 1rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            .placeholder-icon {
+                font-size: 2rem;
+            }
+
+            .placeholder-text {
+                font-size: 0.85rem;
+            }
+
+            .gallery-note {
+                padding: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .final-card {
+                padding: 2.5rem 1.5rem;
+                margin: 2rem 0;
+            }
+
+            .sparkles {
+                font-size: 2.5rem;
+            }
+
+            .final-title {
+                font-size: 2rem;
+            }
+
+            .final-text {
+                font-size: 1.1rem;
+                line-height: 1.7;
+            }
+
+            .final-hearts {
+                font-size: 1.8rem;
+            }
+
+            .timeline-section {
+                padding: 1rem;
+            }
+
+            .timeline-title {
+                font-size: 2rem;
+                margin-bottom: 2rem;
+            }
+
+            .timeline-item {
+                margin-bottom: 2.5rem;
+            }
+
+            /* Better spacing for mobile */
+            .container {
+                padding: 1rem;
+            }
+
+            .header {
+                padding: 2rem 1rem;
+            }
+        }
+
+        /* Extra small phones */
+        @media (max-width: 480px) {
+            .entrance-title {
+                font-size: 2rem;
+            }
+
+            .main-title {
+                font-size: 2rem;
+            }
+
+            .counter-number {
+                font-size: 3rem;
+            }
+
+            .letter-title {
+                font-size: 1.5rem;
+            }
+
+            .letter-text {
+                font-size: 1rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .final-title {
+                font-size: 1.8rem;
+            }
+
+            .final-text {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Hearts -->
+    <div class="hearts-container" id="hearts-container"></div>
+
+    <!-- Entrance Screen -->
+    <div id="entrance-screen">
+        <div class="entrance-content">
+            <h1 class="entrance-title">Fofiuccia</h1>
+            <p class="entrance-subtitle">Will you be my valentine?</p>
+            <button class="enter-button" onclick="enterSite()">YES</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content">
+        <div class="container">
+            <header class="header">
+                <h1 class="main-title">La Nostra Storia</h1>
+            </header>
+
+            <!-- Day Counter -->
+            <section class="counter-section">
+                <div class="counter-label">Insieme da</div>
+                <div class="counter-number" id="day-counter">0</div>
+                <div class="counter-text">giorni meravigliosi</div>
+            </section>
+
+            <!-- Love Letter Section -->
+            <section class="love-letter-section">
+                <div class="letter-container">
+                    <div class="letter-icon">💙</div>
+                    <h3 class="letter-title">Amore Mio,</h3>
+                    <p class="letter-text">
+                        Ogni giorno con te è un regalo prezioso. Questa pagina è solo un piccolo modo 
+                        per dirti quanto sei speciale per me. Ogni momento, ogni sorriso, ogni istante 
+                        passato insieme è impresso nel mio cuore. Ti amo più di quanto le parole possano esprimere.
+                    </p>
+                    <div class="letter-signature">Per sempre tuo ❤️</div>
+                </div>
+            </section>
+
+            <!-- Timeline -->
+            <section class="timeline-section">
+                <h2 class="timeline-title">I Nostri Momenti Speciali</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-date">14 Febbraio 2023</div>
+                            <div class="timeline-title-text">Il Nostro Primo Incontro</div>
+                            <div class="timeline-description">
+                                Quel giorno in cui tutto è iniziato... Non dimenticherò mai il tuo sorriso.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-date">20 Marzo 2023</div>
+                            <div class="timeline-title-text">Il Primo Bacio</div>
+                            <div class="timeline-description">
+                                Sotto le stelle, il momento che ha cambiato tutto. Il mondo si è fermato.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-date">15 Giugno 2023</div>
+                            <div class="timeline-title-text">La Nostra Prima Vacanza</div>
+                            <div class="timeline-description">
+                                Tre giorni indimenticabili al mare. Ogni tramonto era più bello del precedente.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-date">25 Dicembre 2023</div>
+                            <div class="timeline-title-text">Il Nostro Primo Natale</div>
+                            <div class="timeline-description">
+                                Magia pura. Il regalo più bello sei stata tu al mio fianco.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-date">1 Gennaio 2024</div>
+                            <div class="timeline-title-text">Un Nuovo Anno Insieme</div>
+                            <div class="timeline-description">
+                                I nostri sogni per il futuro, le promesse sotto i fuochi d'artificio.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Photo Gallery Section -->
+            <section class="gallery-section">
+                <h2 class="gallery-title">I Nostri Ricordi</h2>
+                <p class="gallery-subtitle">Ogni foto racconta la nostra storia ✨</p>
+                <div class="gallery-grid">
+                    <div class="gallery-item" style="--delay: 0s;">
+                        <div class="gallery-placeholder">
+                            <div class="placeholder-icon">📷</div>
+                            <div class="placeholder-text">Aggiungi<br>Foto 1</div>
+                        </div>
+                    </div>
+                    <div class="gallery-item" style="--delay: 0.1s;">
+                        <div class="gallery-placeholder">
+                            <div class="placeholder-icon">📷</div>
+                            <div class="placeholder-text">Aggiungi<br>Foto 2</div>
+                        </div>
+                    </div>
+                    <div class="gallery-item" style="--delay: 0.2s;">
+                        <div class="gallery-placeholder">
+                            <div class="placeholder-icon">📷</div>
+                            <div class="placeholder-text">Aggiungi<br>Foto 3</div>
+                        </div>
+                    </div>
+                    <div class="gallery-item" style="--delay: 0.3s;">
+                        <div class="gallery-placeholder">
+                            <div class="placeholder-icon">📷</div>
+                            <div class="placeholder-text">Aggiungi<br>Foto 4</div>
+                        </div>
+                    </div>
+                    <div class="gallery-item" style="--delay: 0.4s;">
+                        <div class="gallery-placeholder">
+                            <div class="placeholder-icon">📷</div>
+                            <div class="placeholder-text">Aggiungi<br>Foto 5</div>
+                        </div>
+                    </div>
+                    <div class="gallery-item" style="--delay: 0.5s;">
+                        <div class="gallery-placeholder">
+                            <div class="placeholder-icon">📷</div>
+                            <div class="placeholder-text">Aggiungi<br>Foto 6</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-note">
+                    💡 <strong>Come aggiungere le foto:</strong> Sostituisci i placeholder con le tue immagini nel codice HTML
+                </div>
+            </section>
+
+            <!-- Final Message Section -->
+            <section class="final-message-section">
+                <div class="final-card">
+                    <div class="sparkles">✨</div>
+                    <h3 class="final-title">Buon San Valentino! 💙</h3>
+                    <p class="final-text">
+                        Non vedo l'ora di creare tanti altri ricordi meravigliosi insieme a te. 
+                        Grazie per essere la persona più speciale della mia vita.
+                    </p>
+                    <div class="final-hearts">💙 💙 💙</div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Music Control -->
+    <div class="music-control" id="music-control" onclick="toggleMusic()" style="display: none;">
+        <span class="music-icon">🎵</span>
+        <span class="music-text">La Nostra Canzone</span>
+    </div>
+
+    <!-- Hidden Audio Element -->
+    <audio id="background-music" loop>
+        <source src="Song.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // ========== CONFIGURAZIONE - MODIFICA QUESTI VALORI ==========
+        
+        // Data di inizio della relazione (formato: Anno, Mese-1, Giorno)
+        // Esempio: 14 Febbraio 2023 = new Date(2023, 1, 14)
+        const RELATIONSHIP_START_DATE = new Date(2023, 1, 14);
+
+        // Eventi della timeline - Modifica questi con i vostri momenti speciali
+        const TIMELINE_EVENTS = [
+            {
+                date: "14 Febbraio 2023",
+                title: "Il Nostro Primo Incontro",
+                description: "Quel giorno in cui tutto è iniziato... Non dimenticherò mai il tuo sorriso."
+            },
+            {
+                date: "20 Marzo 2023",
+                title: "Il Primo Bacio",
+                description: "Sotto le stelle, il momento che ha cambiato tutto. Il mondo si è fermato."
+            },
+            {
+                date: "15 Giugno 2023",
+                title: "La Nostra Prima Vacanza",
+                description: "Tre giorni indimenticabili al mare. Ogni tramonto era più bello del precedente."
+            },
+            {
+                date: "25 Dicembre 2023",
+                title: "Il Nostro Primo Natale",
+                description: "Magia pura. Il regalo più bello sei stata tu al mio fianco."
+            },
+            {
+                date: "1 Gennaio 2024",
+                title: "Un Nuovo Anno Insieme",
+                description: "I nostri sogni per il futuro, le promesse sotto i fuochi d'artificio."
+            }
+        ];
+
+        // ========== FINE CONFIGURAZIONE ==========
+
+        // Calculate days together
+        function calculateDays() {
+            const today = new Date();
+            const diffTime = Math.abs(today - RELATIONSHIP_START_DATE);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays;
+        }
+
+        // Update day counter with animation
+        function updateCounter() {
+            const counter = document.getElementById('day-counter');
+            const finalNumber = calculateDays();
+            let currentNumber = 0;
+            const duration = 2000;
+            const increment = finalNumber / (duration / 16);
+
+            const timer = setInterval(() => {
+                currentNumber += increment;
+                if (currentNumber >= finalNumber) {
+                    counter.textContent = finalNumber;
+                    clearInterval(timer);
+                } else {
+                    counter.textContent = Math.floor(currentNumber);
+                }
+            }, 16);
+        }
+
+        // Enter site animation
+        function enterSite() {
+            const entranceScreen = document.getElementById('entrance-screen');
+            const mainContent = document.getElementById('main-content');
+            
+            entranceScreen.classList.add('hidden');
+            setTimeout(() => {
+                mainContent.classList.add('visible');
+                updateCounter();
+                createFloatingHearts();
+            }, 500);
+        }
+
+        // Create floating hearts
+        function createFloatingHearts() {
+            const container = document.getElementById('hearts-container');
+            const heartSymbols = ['❤️', '💕', '💖', '💗', '💓', '💝'];
+            
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                heart.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(heart);
+
+                setTimeout(() => {
+                    heart.remove();
+                }, 20000);
+            }, 3000);
+        }
+
+        // Music control
+        let musicPlaying = false;
+        function toggleMusic() {
+            const audio = document.getElementById('background-music');
+            const musicControl = document.getElementById('music-control');
+            
+            if (musicPlaying) {
+                audio.pause();
+                musicControl.querySelector('.music-text').textContent = 'Play Music';
+            } else {
+                audio.play();
+                musicControl.querySelector('.music-text').textContent = 'Pause Music';
+            }
+            musicPlaying = !musicPlaying;
+        }
+
+        // Show music control only if audio source is added
+        window.addEventListener('load', () => {
+            const audio = document.getElementById('background-music');
+            if (audio.querySelector('source')) {
+                document.getElementById('music-control').style.display = 'flex';
+            }
+        });
+    </script>
+</body>
+</html>
